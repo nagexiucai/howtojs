@@ -1,1 +1,2 @@
 Firefox WebIDE
+Chrome DevTools
