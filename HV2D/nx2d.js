@@ -249,7 +249,7 @@ function initialize() {
 }
 
 function animate() {
-    // 擦出子弹图层
+    // 擦除子弹图层
     cfg.ctxblts.clearRect(0,0,cfg.width,cfg.height);
 
     for (var ett in entities) {
