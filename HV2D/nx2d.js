@@ -30,7 +30,7 @@ function pointin(p, plg) {
     return c;
 }
 
-// 计算平面上已知顶点和所过另外一点坐标开口朝上二次解析参数
+// 计算平面上已知顶点和所过另外一点坐标二次解析参数
 // TODO: 由于计算精度损失导致起止点水平或垂直接近时失效
 function quadratic(vertex, another) {
     /* ax^2 + bx + c = y
@@ -158,7 +158,7 @@ var entity = function (id, name, logo, score, color, bltsctx, ctx) {
                     fly: function () {
                         // 按N次贝塞尔曲线攻击（避开友军）
 
-                        // 按二阶抛物线攻击（若目标为顶点，则简化为“平面上已知顶点和所过一点坐标求开口向上二次解析方程”）
+                        // 按二阶抛物线攻击（若目标为顶点，则简化为“求平面上已知顶点和所过一点坐标二次解析”）
                         
                         // 保存当前坐标
                         var x = this.bx;
