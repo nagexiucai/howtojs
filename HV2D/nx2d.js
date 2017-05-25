@@ -1,17 +1,25 @@
 // https://github.com/nagexiucai/howtojs
 
+// TODO: 中弹后减少生命值
+// TODO: 敌友关系刷新时清理所有未爆子弹
+
 var environments = function () {
     var width = document.body.clientWidth;
     var height = document.body.clientHeight;
+
+    var cvspace = document.getElementById("canvas-space");
     var cvetts = document.getElementById("canvas-entities");
     var cvblts = document.getElementById("canvas-bullets");
-    cvetts.width=cvblts.width=width,cvetts.height=cvblts.height=height;
+
+    cvspace.width=cvetts.width=cvblts.width=width,cvspace.height=cvetts.height=cvblts.height=height;
+
     var sndemit = document.getElementById("audio-emit");
     var sndburst = document.getElementById("audio-burst");
 
     return {
         width: width,
         height: height,
+        ctxspace: cvspace.getContext("2d"),
         ctxetts: cvetts.getContext("2d"),
         ctxblts: cvblts.getContext("2d"),
         sndemit: sndemit,
@@ -70,7 +78,7 @@ function chartlet(ctx, x, y, imgsrc) {
 function dot(ctx,x,y,r,c) {
     ctx.fillStyle = c || "red";
     ctx.beginPath();
-    ctx.arc(this.bx, this.by, r, 0, 2*Math.PI, true);
+    ctx.arc(x, y, r, 0, 2*Math.PI, true);
     ctx.fill();
 }
 
@@ -80,6 +88,17 @@ function text(ctx,x,y,w,c,f,a) {
     ctx.font = f || "xx-large Cursive";
     ctx.textAlign = a || "center";
     ctx.fillText(w, x, y);
+}
+
+// 星空
+function starrysky() {
+    cfg.ctxspace.clearRect(0,0,cfg.width,cfg.height);
+    for (var i=0; i<100; i++) {
+        var m = Math.random();
+        var n = Math.random();
+        var r = Math.random();
+        dot(cfg.ctxspace,cfg.width*m,cfg.height*n,Math.ceil(r*2),"white");
+    }
 }
 
 // 战场布局
@@ -219,7 +238,7 @@ var entity = function (id, name, logo, score, color, bltsctx, ctx) {
 };
 
 function initialize() {
-    var data = [ // by ajax
+    var data = [ // by ajax, fetch combatants
         {id:"sunjian",name:"孙坚",memebers:[],logo:"",score:20},
         {id:"liubiao",name:"刘表",memebers:[],logo:"",score:15},
         {id:"caocao",name:"曹操",memebers:[],logo:"",score:10},
@@ -231,17 +250,15 @@ function initialize() {
         {id:"zhangmiao",name:"张邈",memebers:[],logo:"",score:75},
         {id:"qiaomao",name:"乔瑁",memebers:[],logo:"",score:90},
         {id:"yuanyi",name:"袁遗",memebers:[],logo:"",score:60},
-        {id:"liudai",name:"刘岱",memebers:[],logo:"",score:35},
         {id:"dongzhuo",name:"董卓",memebers:[],logo:"",score:25},
+        {id:"liudai",name:"刘岱",memebers:[],logo:"",score:35},
         {id:"kongrong",name:"孔融",memebers:[],logo:"",score:85},
         {id:"wangkuang",name:"王匡",memebers:[],logo:"",score:50},
         {id:"baoxin",name:"鲍信",memebers:[],logo:"",score:65},
         {id:"zhangyang",name:"张杨",memebers:[],logo:"",score:95},
         {id:"hanfu",name:"韩馥",memebers:[],logo:"",score:15},
-        {id:"yuanshao",name:"袁绍",memebers:[],logo:"",score:25},
-        {id:"gongsunzan",name:"公孙瓒",memebers:[],logo:"",score:45},
         {id:"mateng",name:"马腾",memebers:[],logo:"",score:55},
-        {id:"gongsundu",name:"公孙度",memebers:[],logo:"",score:75},
+        {id:"yuanshao",name:"袁绍",memebers:[],logo:"",score:25},
         {id:"xiucai",name:"秀才",memebers:[],logo:"./xiucai.png",score:65}
     ];
     cfg = environments();
@@ -249,11 +266,17 @@ function initialize() {
 }
 
 function animate() {
+    // 斗转星移
+    if (ticks%3 == 0) {
+        starrysky();
+    }
+
     // 擦除子弹图层
     cfg.ctxblts.clearRect(0,0,cfg.width,cfg.height);
 
+    // 让子弹飞
     for (var ett in entities) {
-        if (ticks%2 == 0) {
+        if (ticks%4 == 0) {
             entities[ett].spark();
         }
         for (var blt in entities[ett].bullets) {
@@ -264,8 +287,7 @@ function animate() {
 
 function update() {
     if (ticks%5 == 0) {
-        // by ajax
-        // modify entities & enemies
+        // by ajax, modify entities & enemies
         ticks = 0;
     }
 
@@ -273,13 +295,13 @@ function update() {
 
     ticks++;
 
-    setTimeout(update, 500);
+    setTimeout(update, 300);
 }
 
 function test() {
     entities["xiucai"].enemies.push("dongzhuo");
     entities["mateng"].enemies.push("dongzhuo");
-    entities["baoxin"].enemies.push("dongzhuo");
+    entities["caocao"].enemies.push("dongzhuo");
     for (var name in entities) {
         entities[name].fight();
     }
