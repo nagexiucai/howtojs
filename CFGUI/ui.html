@@ -1,0 +1,126 @@
+<html>
+    <head>
+        <meta charset='UTF-8'/>
+        <meta name='keywords' content='那个秀才 DevOps'/>
+        <meta name='description' content='那个秀才'/>
+        <link rel='icon' type='image/x-icon' href='./favicon.ico'>
+        <title>CFGUI|NageXiucai.COM</title>
+        <style type='text/css'>
+            * {
+                margin: 0;
+                padding: 0;
+                font-size: 35px;
+                line-height: 40px;
+                text-align: center;
+                width: 100%;
+            }
+            .container,
+            .tip {
+                min-width: 480px;
+            }
+            .template ul {
+                padding-bottom: 
+            }
+            li {
+                list-style-type: none;
+                display: inline-block;
+                width: 320px;
+                border: 1px solid silver;
+                border-radius: 5px;
+            }
+            li:hover {
+                cursor: pointer;
+                background-color: silver;
+                border: 1px solid white;
+            }
+            li span {
+                display: inline-block;
+                font-size: 20px;
+            }
+            .tip span {
+                display: inline-block;
+                width: 80px;
+                font-size: 15px;
+            }
+            .banner {
+                padding-top: 15px;
+                padding-bottom: 15px;
+                font-size: 45px;
+                line-height: 45px;
+                border-bottom: 2px solid white;
+            }
+            .banner:hover {
+                cursor: help;
+            }
+            .tip {
+                position: fixed !important;
+                bottom: 0px;
+                position: absolute;
+            }
+            .banner,
+            .tip {
+                background-color: black;
+                color: white;
+            }
+            .mark {
+                border-radius: 5px;
+                background-color: silver;
+                width: auto;
+            }
+        </style>
+    </head>
+    <body>
+        <div class='container'>
+            <div id='start' class='start'>
+                <p class='banner' onclick='toggle("specy");'>环境</p>
+                <div id='specy' class='specy' soh='shown'>
+                    <ul>
+                        <li onclick='dispatch(this);'>Libvirt</li>
+                        <li onclick='dispatch(this);'>OpenStack</li>
+                        <li onclick='dispatch(this);'>Ceph</li>
+                        <li onclick='dispatch(this);'>Docker</li>
+                        <li onclick='dispatch(this);' style='color:gray;'>WhatIsTheNext</li>
+                    </ul>
+                </div>
+                <p class='banner' onclick='toggle("template");'>模板</p>
+                <div id='template' class='template' soh='shown'>
+                    <ul>
+                        <li>
+                            <span>Classic</span>
+                            <span>NHosts</span>
+                            <span>Libvirt</span>
+                            <span>QKVM</span>
+                            <span>RAID</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <p class='banner' onclick='toggle("package");'>装配</p>
+            <div id='package' class='package' soh='shown'>
+                <ul>
+                    <li>
+                        <span class='mark'>主板</span>
+                        <span class='mark'>CPU</span>
+                        <span class='mark'>GPU</span>
+                        <span class='mark'>内存</span>
+                        <span class='mark'>硬盘</span>
+                        <span class='mark'>网卡</span>
+                        <span class='mark'>路由器</span>
+                        <span class='mark'>交换机</span>
+                        <span class='mark'>防火墙</span>
+                    </li>
+                    <li>
+                        <canvas id='paper'></canvas>
+                    </li>
+                </ul>
+            </div>
+            <div class='tip'>
+                <span id='message'></span>
+                <span id='state'></span>
+                <span id='owner'></span>
+                <span id='stamp'></span>
+            </div>
+        </div>
+    </body>
+    <script type='text/javascript' src='./cfg.js'></script>
+</html>
