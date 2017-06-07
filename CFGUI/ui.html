@@ -37,12 +37,11 @@
                 border: 1px solid white;
             }
             .package li {
-                display: block;
-                margin: auto;
+                width: auto;
             }
             .canvas {
-                width: 640px;
-                height: 480px;
+                display: block;
+                margin: auto;
             }
             .template li:hover {
                 border: 1px solid green;
@@ -136,17 +135,21 @@
             <div id='package' class='package' soh='shown'>
                 <ul>
                     <li>
+                        <span class='mark' onclick='mode("computer");'>计算机</span>
+                        <span class='mark' onclick='mode("router");'>路由器</span>
+                        <span class='mark' onclick='mode("switcher");'>交换机</span>
+                        <span class='mark' onclick='mode("firewall");'>防火墙</span>
+                    </li>
+                    <li>
                         <span class='mark' onclick='mode("mainboard");'>主板</span>
                         <span class='mark' onclick='mode("cpu");'>处理器</span>
                         <span class='mark' onclick='mode("gpu");'>显卡</span>
                         <span class='mark' onclick='mode("memory");'>内存</span>
                         <span class='mark' onclick='mode("disk");'>硬盘</span>
                         <span class='mark' onclick='mode("netcard");'>网卡</span>
-                        <span class='mark' onclick='mode("router");'>路由器</span>
-                        <span class='mark' onclick='mode("switcher");'>交换机</span>
-                        <span class='mark' onclick='mode("firewall");'>防火墙</span>
+                        <span class='mark' onclick='mode("port");'>端口</span>
                     </li>
-                    <li class='canvas'>
+                    <li class='canvas' style='width:640px;height:480px;'>
                         <canvas id='paper' width='640px' height='480px'>无法显示？客观的浏览器居然这么老！</canvas>
                         <canvas id='grid' width='640px' height='480px'>无法显示？客观的浏览器居然这么老！</canvas>
                     </li>

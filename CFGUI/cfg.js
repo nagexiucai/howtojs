@@ -106,12 +106,29 @@ function getLocation(x, y) {
         */  
     };  
 }
+function um() {
+    var userManualLayer = document.createElement("div");
+    var userManualPictureWrap = document.createElement("div");
+    var userManualPicture = document.createElement("img");
+    userManualLayer.setAttribute("id", "um");
+    userManualLayer.setAttribute("style", "position:fixed;top:0;left:0;width:100%;height:100%;background-color:rgba(0,0,0,0.75);");
+    userManualLayer.setAttribute("onclick", "closeUM();");
+    userManualPictureWrap.setAttribute("style", "width:800px;margin:auto;overflow-y:auto;");
+    userManualPicture.setAttribute("alt", "用户手册");
+    userManualPicture.setAttribute("src", "./um-overview.png");
+    userManualPictureWrap.appendChild(userManualPicture);;
+    userManualLayer.appendChild(userManualPictureWrap);
+    document.body.appendChild(userManualLayer);
+}
+function closeUM() {
+    document.body.removeChild(document.getElementById("um"));
+}
 
 function initialize() {
-    message.innerHTML = "NULL";
+    message.innerHTML = "<a href='javascript:um();' style='font-size:15px;color:white;text-decoration-line:none;'>用户手册</a>";
     state.innerHTML = "Ready";
-    owner.innerHTML = "Anonymous";
-    stamp.innerHTML = "9527";
+    owner.innerHTML = "NageXiucai";
+    stamp.innerHTML = "201706051005";
     drawGrid(grid);
     grid.onmousemove = function(evt) {
         // TODO: optimize the algorithm to accelerate locating
