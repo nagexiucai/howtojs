@@ -26,6 +26,7 @@ var state = document.getElementById("state");
 var owner = document.getElementById("owner");
 var stamp = document.getElementById("stamp");
 var paper = document.getElementById("paper");
+var grid = document.getElementById("grid");
 var pc = document.getElementById("paper-curosr");
 
 function id2object(_) {
@@ -68,12 +69,85 @@ function sign(what, checked, unchecked) {
         what.setAttribute("state", "unchecked");
     }
 }
+function drawGrid(cv, step) {
+    var ctx = cv.getContext("2d");
+    cv.k = step || 32;
+    var m = Math.floor(cv.width / cv.k);
+    var n = Math.floor(cv.height / cv.k);
+    console.log(m);
+    console.log(n);
+    for (var x=1; x<m; x++) {
+        for (var y=1; y<n; y++) {
+            var p = x * cv.k;
+            var q = y * cv.k;
+            var d = cv.k / 2;
+            ctx.lineWidth = 0.2;
+            ctx.strokeStyle = "black";
+            ctx.beginPath();
+            ctx.moveTo(p-d, q);
+            ctx.lineTo(p+d, q);
+            ctx.moveTo(p, q-d);
+            ctx.lineTo(p, q+d);
+            ctx.stroke();
+            ctx.closePath();
+        }
+    }
+}
+function getLocation(x, y) {
+    var bbox = grid.getBoundingClientRect();
+    return {
+        x: (x - bbox.left) * (grid.width / bbox.width),
+        y: (y - bbox.top) * (grid.height / bbox.height)
+
+        /* 此处不用下面两行是为了防止使用CSS和JS改变了canvas的高宽之后是表面积拉大而实际
+         * 显示像素不变而造成的坐标获取不准的情况
+        x: (x - bbox.left),
+        y: (y - bbox.top)
+        */  
+    };  
+}
 
 function initialize() {
     message.innerHTML = "NULL";
     state.innerHTML = "Ready";
     owner.innerHTML = "Anonymous";
     stamp.innerHTML = "9527";
+    drawGrid(grid);
+    grid.onmousemove = function(evt) {
+        // TODO: optimize the algorithm to accelerate locating
+        var lc = getLocation(evt.clientX, evt.clientY);
+        var ctx = paper.getContext("2d");
+        if (((Math.pow(lc.x%grid.k,2) + Math.pow(lc.y%grid.k,2)) < Math.pow(grid.k/2,2)) && (lc.x > grid.k/2 && lc.y > grid.k/2)) {
+            if (grid.dotx && grid.doty) {
+                ctx.fillStyle = "white";
+                ctx.beginPath();
+                ctx.arc(grid.dotx,grid.doty,6,0,2*Math.PI);
+                ctx.fill();
+                ctx.closePath();
+            }
+            grid.dotx = Math.floor(lc.x/grid.k)*grid.k;
+            grid.doty = Math.floor(lc.y/grid.k)*grid.k;
+            ctx.fillStyle = "black";
+            ctx.beginPath();
+            ctx.arc(grid.dotx,grid.doty,5,0,2*Math.PI);
+            ctx.fill();
+            ctx.closePath();
+        }
+    };
+    grid.onmousedown = function(evt) {
+        var lc = getLocation(evt.clientX, evt.clientY);
+        console.log("set device on " + lc.x + " " + lc.y);
+    };
+    grid.onmouseleave = function(evt) {
+        var ctx = paper.getContext("2d");
+        if (grid.dotx && grid.doty) {
+            ctx.fillStyle = "white";
+            ctx.beginPath();
+            ctx.arc(grid.dotx,grid.doty,6,0,2*Math.PI);
+            ctx.fill();
+            ctx.closePath();
+        }
+    };
 }
 
 function dispatch(what) {
