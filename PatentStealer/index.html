@@ -1,0 +1,99 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta charset='UTF-8'/>
+        <meta name='keywords' content='那个秀才 云计算 大数据 神经网络 机器学习 人工智能 物联网 区块链 Python JavaScript IOT AI 3D GIS OpenStack Docker BlockChain'/>
+        <meta name='description' content='那个秀才'/>
+        <title>专利时迁</title>
+        <style type='text/css'>
+            html,
+            body,
+            .container {
+                width:100%;
+                height:100%;
+                margin:0;
+                padding:0;
+                text-align:center;
+            }
+            .form,
+            .list {
+                width:480px;
+                margin:0 auto;
+            }
+            input {
+                font-size:36px;
+                line-height:36px;
+                text-align:inherit;
+            }
+            .hidden {
+                display:none;
+            }
+            input,
+            .description {
+                display:inline-block;
+            }
+            .item {
+                width:100%;
+                height:auto;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="form">
+                <input type="text" value="特征" id="searchword"/>
+                <input type="button" value="搜索" onclick="fetch();"/>
+            </div>
+            <div class="list">
+                <ul id="content">
+                </ul>
+            </div>
+        </div>
+        <iframe id="xxx" style="height:480px;width:100%;overflow:scroll"></iframe>
+    </body>
+    <script type="text/javascript">
+        function fetch() {
+            var searchword = document.getElementById("searchword").value;
+            var request = encodeURI("http://www2.soopat.com/Home/Result?SearchWord=" + searchword + "&FMZL=Y&SYXX=Y");
+            var frame = document.getElementById("xxx");
+
+            function doit() {
+                var content = document.getElementById("content");
+                var bd = document.getElementsByTagName("body")[0];
+                var divs = bd.getElementsByTagName("div");
+                for (var n=0; n<divs.length; n++) {
+                    var id = divs[n].getAttribute("id");
+                }
+                var pgctt = document.getElementById("PageContent");
+                var pbs = pgctt.getElementsByClassName("PatentBlock"); // TODO: why null?
+                for (var i=0; i<pbs.length; i++) {
+                    var pb = pbs[i];
+                    var count = pb.getElementsByTagName("div").length;
+                    if (count == 3) {
+                        var link = pb.getElementsByTagName("a")[0].innerHTML;
+                        var link = link.replace(/\<.*?\>/g, ""); // innerText
+                        var href = pb.getElementsByTagName("a")[0].href;
+                        var abstract = pb.getElementsByClassName("PatentContentBlock")[0].innerText;
+                        var li = document.createElement("li");
+                        li.setAttribute("class", "item");
+                        var a = document.createElement("a");
+                        a.setAttribute("href", href);
+                        a.innerHTML = link;
+                        var span = document.createElement("span");
+                        span.setAttribute("class", "description");
+                        span.innerHTML = abstract;
+                        li.appendChild(a);
+                        li.appendChild(span);
+                        content.appendChild(li);
+                    }
+                }
+            }
+
+            frame.onload = function() {
+                setTimeout(doit,2000);
+            };
+
+            frame.src = request;
+        }
+    </script>
+</html>
