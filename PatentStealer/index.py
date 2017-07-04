@@ -40,7 +40,10 @@ class Creeper(object):
 '''
     PatentBlock = FIND.compile('<div class="PatentBlock".*?>(.*?</div>)\s*?</div>', FIND.S)
     PatentName = FIND.compile("MC='(.*?)'", FIND.S)
-    PatentNumber = FIND.compile('SQH="(\d{12}\.\w{1})"', FIND.S) # yyyyabtvwxyz.m ~ 四位公元+两位年代+一位类型+五位序列+一位机码（点号前八位按位和“23456789”加权和取11的余数10记为X）
+    # 现行点前十二位yyyyabtvwxyz.m
+    # 四位公元+两位年代+一位类型+五位序列+一位机码（点号前八位按位和“23456789”加权和取11的余数10记为X）
+    # 兼容点前九位旧码
+    PatentNumber = FIND.compile('SQH="(\d{9,12}\.\w{1})"', FIND.S)
     PatentProposer = FIND.compile('申请人：<a.*?>(.*?)</a>', FIND.S)
     PatentAbstract = FIND.compile('摘要:(.*?)</span>', FIND.S)
 
@@ -60,12 +63,13 @@ class Creeper(object):
 
     TagErase = FIND.compile('<.*?>', FIND.S)
 
-    def __init__(self, entry, headers={}, params={}, json={}, proxies={}):
+    def __init__(self, entry, headers={}, params={}, json={}, proxies={}, timeout=(9, 29)):
         self.entry = entry
         self.headers = headers
         self.params = params
         self.json = json
         self.proxies = proxies
+        self.timeout = timeout
         self.data = []
         self.log = open("./log.txt", "a")
 
@@ -73,26 +77,34 @@ class Creeper(object):
         self.log.close()
 
     def creep(self):
-        print(self.entry)
+        print("## " + self.entry)
         try:
-            responses = HTTP.get(self.entry, headers=self.headers, params=self.params, json=self.json, proxies=self.proxies, timeout=(4, 9))
+            responses = Creeper.request(self.entry, "GET", headers=self.headers, params=self.params, json=self.json, proxies=self.proxies, timeout=self.timeout)
+            print("$$ " + responses.url)
         except HTTP.Timeout:
-            self.proxies = {"http":"http://61.136.163.247:3218",
-                            "https": "http://218.29.111.106:9999"}
             self.creep()
         else:
             print(responses.text.encode(responses.encoding).decode("utf-8"), file=self.log)
             future, data = Creeper.ut(responses.text)
             if not data:
-                self.proxies = {"http": "http://60.176.149.171:8123",
-                                "https": "http://122.245.70.120:808"}
                 self.creep()
             else:
                 self.data.extend(data)
                 for ft in future:
-                    self.entry = "http://www.soopat.com" + ft
+                    self.entry = "http://www.soopat.com" + ft # TODO: adjust other options
                     self.creep()
                     LORD.sleep(Creeper.Interval)
+
+    @staticmethod
+    def request(entry, method, **kwargs):
+        if kwargs.get("proxies"):
+            httpproxy, httpsproxy = Creeper.PrettyProxy.ProxiesGenerator()
+            kwargs.update({"proxies": {"http": httpproxy, "https": httpsproxy}})
+        if method == "GET":
+            return HTTP.get(entry, **kwargs)
+        if method == "POST":
+            return  HTTP.post(entry, **kwargs)
+        raise ValueError("invalid method %s" % method)
 
     def export(self):
         with open("./data.txt", "a") as db:
@@ -102,7 +114,7 @@ class Creeper(object):
     def creepy(entry, test=""):
         data = {"inventors": []}
         for r in (Creeper.PatentAbstractFull, Creeper.PatentInventors, Creeper.PatentInventor):
-            s = test or HTTP.get(entry).text
+            s = test or Creeper.request(entry, "GET").text
             # print(s)
             for m in r.findall(s):
                 if r is Creeper.PatentAbstractFull:
@@ -128,10 +140,11 @@ class Creeper(object):
             for r in (Creeper.PatentName, Creeper.PatentNumber, Creeper.PatentProposer, Creeper.PatentAbstract):
                 for m in r.findall(p): # only one matched
                     if r is Creeper.PatentNumber:
-                        print(m.split(".")[0]) # patent's details page url
+                        item["suburl"] = m.split(".")[0] # patent's details page url
                         item["number"] = m
+                        print(m)
                         # if not text:
-                        #     Creeper.creepy("", Creeper.PatentAbstractFullCase)
+                        #     Creeper.creepy(None, Creeper.PatentAbstractFullCase)
                         continue
                     if r is Creeper.PatentAbstract:
                         nm, count = Creeper.TagErase.subn("", m)
@@ -145,17 +158,15 @@ class Creeper(object):
                     print(m)
             if item:
                 # if text:
-                #     item.update(Creeper.creepy("http://www.soopat.com/Patent/" + item["number"].split(".")[0]))
+                #     item.update(Creeper.creepy("http://www.soopat.com/Patent/" + item.pop("suburl"))
                 data.append(item)
         return future, data
 
 # Creeper.ut()
 
-creeper = Creeper(entry="http://www.soopat.com/Home/Result?SearchWord=%E8%A7%86%E9%A2%91%E6%A3%80%E7%B4%A2&FMZL=Y&SYXX=Y&PatentIndex=160",
-                  params={"SearchWord": "视频检索", "FMZL": "Y", "SYXX": "Y"},
-                  proxies={
-                      "http": "http://220.174.236.211:80",
-                      "https": "http://123.207.99.84:3128"})
+creeper = Creeper(entry="http://www.soopat.com/Home/Result",
+                  params={"SearchWord": "视频检索", "FMZL": "Y", "SYXX": "Y", "PatentIndex": 160},
+                  proxies=True)
 try:
     creeper.creep()
 finally:

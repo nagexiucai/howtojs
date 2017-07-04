@@ -23,15 +23,17 @@ def UThread(target, params, name):
 
 
 def XiCi(text):
+    print("=========")
+    print(text)
     return {"HTTP": [], "HTTPS": []}
 
 
 class Proxy(object):
-    ProxySources = [("http://www.xicidaili.com/nn/", XiCi)] # configure proxy sources url
+    ProxySources = [("http://www.xicidaili.com", XiCi)] # configure proxy sources url
     ConnectTimeout = 4.5
     ReadTimeout = 9.5
     MaxTries = 3
-    ProxyPool = {"HTTP": ["http://ip:port"], "HTTPS": ["http://ip:port"]}
+    ProxyPool = {"HTTP": ["http://121.206.55.223:808"],"HTTPS": ["http://127.0.0.1:8087"]}
 
     @staticmethod
     def Update():
@@ -40,8 +42,10 @@ class Proxy(object):
                 proxies = method(requests.get(source).text)
                 Proxy.ProxyPool["HTTP"].extend(proxies["HTTP"])
                 Proxy.ProxyPool["HTTPS"].extend(proxies["HTTPS"])
-            except:
+            except requests.ConnectionError:
                 print("source expired: " + source)
+            except requests.Timeout:
+                print("source is too slowly: " + source)
 
     def __init__(self):
         self.TestThread = MThread(MThread.Lock, "TestProxyPool") # test existing proxy for filtering
@@ -51,6 +55,8 @@ class Proxy(object):
         return Proxy.ProxyPool["HTTP"][0], Proxy.ProxyPool["HTTPS"][0]
 
     def Wait(self):
+        self.TestThread.start()
+        self.UpdateThread.start()
         while not (Proxy.ProxyPool["HTTP"] and Proxy.ProxyPool["HTTPS"]):
             print("wait ...")
             Ellipsis
