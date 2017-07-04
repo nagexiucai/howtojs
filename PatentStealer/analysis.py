@@ -1,6 +1,55 @@
 #/usr/bin/env python
 #coding=utf-8
 
+import jieba
+import PIL
+import wordcloud as WC
+import numpy as MATH
+from matplotlib import pyplot as SHOW
+from collections import Counter
+
+
+state = "begin"
+count = 0
+data = []
+with open("./AVsearch.data", encoding="UTF-8") as df:
+    item = []
+    for line in df:
+        line = line.strip()
+        if line.startswith("#"):continue
+        if line:
+            state = "do"
+        else:
+            state = "parse"
+        if state == "do":
+            item.append(line)
+        if state == "parse" and item:
+            data.append(dict(zip(("name", "number", "proposer", "abstract"), item)))
+            item[:] = []
+# print(data)
+# print("there are",len(data), "pieces in total")
+
+words = {}
+for piece in data:
+    t = list(jieba.cut(piece.get("name")))
+    t.extend(list(jieba.cut(piece.get("abstract"))))
+    words[piece.get("number")] = t
+numbers = list(words.keys())
+numbers.sort()
+counter = Counter()
+for number in numbers:
+    print(number)
+    counter[number] += 1
+
+wc = WC.WordCloud()
+wc.generate_from_frequencies(dict(counter))
+
+SHOW.figure()
+SHOW.imshow(wc)
+SHOW.axis("off")
+SHOW.show()
+
+
 # 热点
 # 常用
 # 生僻

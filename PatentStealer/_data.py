@@ -12,17 +12,24 @@ v = v1 + v2 + v3
 v.sort(key=lambda x: x.get("number", "missing"))
 
 ids = []
+errors = []
 for _ in v:
 
     print(_.get("name", "missing"));
     __ = _.get("number", "missing")
+    if __ != "missing":
+        if __ in ids:
+            errors.append(__)
     ids.append(__)
     print(__)
     print(_.get("proposer", "missing"))
     print(_.get("abstract", "missing"))
     print("")
 
-if ids.index("missing") != -1:
+if "missing" in ids:
     print("id-missing exists")
-if len(ids) != len(set(ids)):
+if errors:
     print("id-repeat exists")
+    print("===repeat ids===")
+    for error in errors:
+        print(error)
