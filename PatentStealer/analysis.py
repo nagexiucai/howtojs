@@ -45,10 +45,33 @@ for piece in data:
     words[piece.get("number")] = pcounter
     counter.update(pcounter)
 numbers = list(words.keys())
-numbers.sort()
-for number in numbers:
-    print(number)
-print(counter.most_common(int(round(len(number)*0.8))))
+# numbers.sort()
+# for number in numbers:
+#     print(number)
+# print("most frequent words")
+print(counter.most_common(int(round(len(numbers)*0.8))))
+
+def approximate(features, statistics):
+    '''
+    :param features: (string,...) # feature table
+    :param statistics: {string: collections.Counter instance,...} # patent-number => keywords-frequency
+    :return: [string,...] # patent numbers
+    '''
+    kith = []
+    threshold = len(features) * (MATH.sqrt(2)/2) # TODO: 暂时采用相关性典型值
+    print("threshold is", threshold)
+    for k, v in statistics.items():
+        keys = dict(v.most_common(9)).keys()
+        if len(set(keys) & set(features)) >= threshold:
+            # print(k, keys)
+            kith.append(k)
+    return kith
+
+print("there are", len(words), "cases in total")
+print("reference")
+reference = approximate(("视频", "音频"), words)
+print(len(reference))
+print(reference)
 
 wccfg = {
     "width": 640,
@@ -64,7 +87,7 @@ wccfg = {
 }
 wc = WC.WordCloud(**wccfg) # TODO: how to make some image overlay with words
 wc.generate_from_frequencies(dict(counter))
-wc.to_file("./wc-patent.png")
+# wc.to_file("./wc-patent.png")
 
 SHOW.figure() # TODO: obsessive-compulsive disorder(ocd) can not tolerate figure's default title of window
 SHOW.title("wc-patent")
