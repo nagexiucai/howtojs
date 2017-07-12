@@ -10,10 +10,14 @@ from matplotlib import pyplot as SHOW
 from collections import Counter
 
 
+DATA = "AVsearch.data"
+NAME = "wc-patent"
+
+
 state = "begin"
 count = 0
 data = []
-with open("./AVsearch.data", encoding="UTF-8") as df:
+with open("./"+DATA, encoding="UTF-8") as df:
     item = []
     for line in df:
         line = line.strip()
@@ -87,10 +91,10 @@ wccfg = {
 }
 wc = WC.WordCloud(**wccfg) # TODO: how to make some image overlay with words
 wc.generate_from_frequencies(dict(counter))
-# wc.to_file("./wc-patent.png")
+wc.to_file("./"+NAME+".png")
 
 SHOW.figure() # TODO: obsessive-compulsive disorder(ocd) can not tolerate figure's default title of window
-SHOW.title("wc-patent")
+SHOW.title(NAME)
 SHOW.imshow(wc)
 SHOW.axis("off")
 SHOW.show() # 进入绘图窗口

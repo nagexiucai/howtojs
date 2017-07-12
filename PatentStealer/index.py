@@ -19,7 +19,7 @@ from proxy import Proxy
 
 class Creeper(object):
     DeepLimit = 3
-    Interval = 1000
+    Interval = 2
 
     PrettyProxy = Proxy()
     PrettyProxy.Wait()
@@ -77,6 +77,7 @@ class Creeper(object):
         self.log.close()
 
     def creep(self):
+        LORD.sleep(Creeper.Interval)
         print("## " + self.entry)
         try:
             responses = Creeper.request(self.entry, "GET", headers=self.headers, params=self.params, json=self.json, proxies=self.proxies, timeout=self.timeout)
@@ -92,8 +93,8 @@ class Creeper(object):
                 self.data.extend(data)
                 for ft in future:
                     self.entry = "http://www.soopat.com" + ft # TODO: adjust other options
+                    self.params = {} # Next's URI is intact
                     self.creep()
-                    LORD.sleep(Creeper.Interval)
 
     @staticmethod
     def request(entry, method, **kwargs):
@@ -165,7 +166,7 @@ class Creeper(object):
 # Creeper.ut()
 
 creeper = Creeper(entry="http://www.soopat.com/Home/Result",
-                  params={"SearchWord": "视频检索", "FMZL": "Y", "SYXX": "Y", "PatentIndex": 160},
+                  params={"SearchWord": "开关", "FMZL": "Y", "SYXX": "Y", "PatentIndex": 160},
                   proxies=True)
 try:
     creeper.creep()
