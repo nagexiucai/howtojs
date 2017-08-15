@@ -5,13 +5,70 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>那个秀才|初行太白·纯CSS时间轴</title>
+        <link rel='icon' type='image/x-icon' href='favicon.ico'>
         <link rel="stylesheet" type="text/css" href="css/default.css"/>
         <link rel="stylesheet" type="text/css" href="css/component.css"/>
         <script src="js/modernizr.custom.js"></script>
+        <style type="text/css">
+            .cbp_tmtimeline > li {
+                min-width:320px;
+            }
+            a {
+                color:black;
+            }
+            p {
+                font-size:xx-large;
+            }
+            .photo {
+                background-attachment:scroll;
+                background-color:rgb(255, 171, 64);
+                background-origin:padding-box;
+                background-position-x:50%;
+                background-position-y:50%;
+                background-repeat:repeat;
+                background-size:cover;
+            }
+            @media screen and (max-width: 480px) {
+                .photo {
+                    min-height:160px;
+                }
+            }
+            @media screen and (min-width: 480px) and (max-width: 960px) {
+                .photo {
+                    min-height:320px;
+                }
+            }
+            @media screen and (min-width: 960px) {
+                .photo {
+                    min-height:480px;
+                }
+            }
+            .start {
+                background-image:url("pictures/small.jpg");
+            }
+            .lavender {}
+            .water {}
+            .house {}
+            .square {}
+            .ticket {}
+            .crowd {}
+            .hesite {}
+            .station {}
+            .peak {}
+            .remain {}
+            .hungry {}
+            .worried {}
+            .summary {}
+        </style>
     </head>
     <body>
         <div class="container">
             <div class="main">
+                <p>
+                笔者登过的山不算多，头一次游览太白山，对其自然风光及附近风土人情的品鉴，若需要一个假想的标的，那就是同在秦岭的华山。
+                华山，也叫“太华山”，旁边就有“少华山”。
+                太华山、太白山，一东一西，屹立秦岭两端的明珠。
+                </p>
                 <ul class="cbp_tmtimeline">
                     <li>
                         <time class="cbp_tmtime" datetime="2017-08-05 08:00">
@@ -21,6 +78,7 @@
                         <div class="cbp_tmicon cbp_tmicon-phone"></div>
                         <div class="cbp_tmlabel">
                             <h2>集合出发</h2>
+                            <div class="photo start"></div>
                             <p>
                             由于此次是自费“蹭”关系公司（BDX）给员工的旅游福利团，所以人不少，大概五十多人，可惜自己并不熟悉其中绝大多数。
                             集合地址自然定在BDX的园区大门口，一辆大巴外加一辆小面包刚好装得下大伙儿。
@@ -36,6 +94,7 @@
                         <div class="cbp_tmicon cbp_tmicon-screen"></div>
                         <div class="cbp_tmlabel">
                             <h2>薰衣草庄园</h2>
+                            <div class="photo lavender"></div>
                             <p>
                             来的时节不对，花自凋零。这是曲江集团在西安周边的一个项目，可能作为自家花饰、香料的来源，接待游客是附带功用吧。
                             </p>
@@ -49,10 +108,12 @@
                         <div class="cbp_tmicon cbp_tmicon-mail"></div>
                         <div class="cbp_tmlabel">
                             <h2>水街</h2>
+                            <div class="photo water"></div>
                             <p>
                             曾经一个同事说自家隔壁老王说“水街风景甲天下”，此次不禁想提醒那位前同事“老王不靠谱”。
                             恰逢有人“演”南方水乡的传统“楼船接亲”，算是凑了把热闹。
                             这里让笔者联想到北京颐和园的“苏州街”，事实上，它比“苏州街”要大、要开阔很多。
+                            午饭安排到太白山下吃，这会儿有点饿，就在桥下吃了点大麻花。
                             </p>
                         </div>
                     </li>
@@ -64,10 +125,12 @@
                         <div class="cbp_tmicon cbp_tmicon-phone"></div>
                         <div class="cbp_tmlabel">
                             <h2>农家酒店村野山庄</h2>
+                            <div class="photo house"></div>
                             <p>
                             按导游的计划，前往位于眉县太白山下的双明农家酒店吃午饭，然后就近的宝铁山庄住宿。
-                            饭吃的凑凑合合，味道差太多、量也不怎么样，奇怪的是竟然好几个团前后排队，可见店家做足了导游的市场工作，后边不做特殊说明，吃饭均是在这家。
-                            令人不满的是，居然今天后半段，就要在客房中度过，电视大概五六秒黑屏一两秒、卫生间一点儿也不卫生，竟然还不断地停电，这样的条件按导游所说标间门市价二百六十元人民币，其中奥妙就不明说了。
+                            饭吃的凑凑合合，味道差太多、量也不怎么样。<!--奇怪的是竟然好几个团前后排队，可见店家做足了导游的市场工作，后边不做特殊说明，吃饭均是在这家。-->
+                            可惜的是，今天后半段，就要浪费在客房中。
+                            电视大概五六秒黑屏一两秒、卫生间一点儿也不卫生，竟然还不断地停电。<!--这样的条件按导游所说标间门市价二百六十元人民币，其中奥妙就不明说了。-->
                             </p>
                         </div>
                     </li>
@@ -79,13 +142,14 @@
                         <div class="cbp_tmicon cbp_tmicon-earth"></div>
                         <div class="cbp_tmlabel">
                             <h2>夜游太白广场</h2>
+                            <div class="photo square"></div>
                             <p>
                             晚饭后，貌似大伙儿都要去附近转转，毕竟被憋在客房里整整一下午啦。
                             向西走二三百米，会看到一个中规模的广场，傍着大山，衔接处的石壁修整得很有特点。
                             一轮明月升起来了，附近的山坡上布满了变化着颜色的灯光，甚是美丽。
                             这一点，和华山很不一样。
                             广场上的人民，有的要着蒲扇、有的跳舞唱歌，一片祥和。
-                            偶尔有警察巡哨，让人感觉治安还不错呢还是很不好呢，显然更愿意接受前者。
+                            偶尔有警察巡哨，让人感觉治安还不错呢还是很不好呢……
                             </p>
                         </div>
                     </li>
@@ -97,6 +161,7 @@
                         <div class="cbp_tmicon cbp_tmicon-screen"></div>
                         <div class="cbp_tmlabel">
                             <h2>购票进山</h2>
+                            <div class="photo ticket"></div>
                             <p>
                             总算步入此次出游的正题，按说组了团，请了导游，票务方面的事情导游应该提前打理好。
                             哪知道，这位导游不靠谱到这般地步，伙食、住宿上动手脚可以忍，忘了给BDX带定制好的帽子、又因为购票让大伙足足等了一个小时。
@@ -112,16 +177,134 @@
                         </time>
                         <div class="cbp_tmicon cbp_tmicon-phone"></div>
                         <div class="cbp_tmlabel">
-                            <h2>第一次冒雨上山</h2>
-                            <p>人叫一个多！</p>
+                            <h2>人叫一个多</h2>
+                            <div class="photo crowd"></div>
+                            <p>正值暑假，很多家长带小孩玩或者少年携侣丛游，真可谓接踵摩肩。</p>
+                        </div>
+                    </li>
+                    <li>
+                        <time class="cbp_tmtime" datetime="2017-08-06 12:00">
+                            <span>06/08/2017</span>
+                            <span>12:00</span>
+                        </time>
+                        <div class="cbp_tmicon cbp_tmicon-earth"></div>
+                        <div class="cbp_tmlabel">
+                            <h2>暴风骤雨人踌躇</h2>
+                            <div class="photo hesite"></div>
+                            <p>
+                            到天下索道上站，由于团定的时间，正犹豫要不要乘缆车上去，此时风雨骤增，幸好有备而来，赶紧套上长衣。
+                            于是放弃原计划，再次乘坐巴士向前。
+                            </p>
+                        </div>
+                    </li>
+                    <li>
+                        <time class="cbp_tmtime" datetime="2017-08-06 12:50">
+                            <span>06/08/2017</span>
+                            <span>12:50</span>
+                        </time>
+                        <div class="cbp_tmicon cbp_tmicon-mail"></div>
+                        <div class="cbp_tmlabel">
+                            <h2>小站充饥</h2>
+                            <div class="photo station"></div>
+                            <p>
+                            这里是景区内巴士能到达的最高的地方，叫下板寺。
+                            总算座风雨不动安如山的所在，可以歇歇脚、补充下能量、方便一下。
+                            不出意外地，饭菜都是量少价高，大部分人都选择泡面、面包之类自带的干粮，好在小站内提供热水。
+                            </p>
+                        </div>
+                    </li>
+                    <li>
+                        <time class="cbp_tmtime" datetime="2017-08-06 13:30">
+                            <span>06/08/2017</span>
+                            <span>13:30</span>
+                        </time>
+                        <div class="cbp_tmicon cbp_tmicon-screen"></div>
+                        <div class="cbp_tmlabel">
+                            <h2>登上小高峰</h2>
+                            <div class="photo peak"></div>
+                            <p>
+                            吃饱喝足后，雨渐渐小了，出来上了趟厕所，雨几乎停了。
+                            趁还有兴致，便徒步上行，会见到一处较为开阔的平台，可以远眺群峰、俯瞰丛林。
+                            算是这次整个登太白山过程中最惬意的一段了。
+                            </p>
+                        </div>
+                    </li>
+                    <li>
+                        <time class="cbp_tmtime" datetime="2017-08-06 14:10">
+                            <span>06/08/2017</span>
+                            <span>14:10</span>
+                        </time>
+                        <div class="cbp_tmicon cbp_tmicon-phone"></div>
+                        <div class="cbp_tmlabel">
+                            <h2>意犹未尽</h2>
+                            <div class="photo remain"></div>
+                            <p>
+                            抱着小小的遗憾，下山。
+                            中间需要排队倒一次车，别的没啥。
+                            </p>
+                        </div>
+                    </li>
+                    <li>
+                        <time class="cbp_tmtime" datetime="2017-08-06 15:00">
+                            <span>06/08/2017</span>
+                            <span>15:00</span>
+                        </time>
+                        <div class="cbp_tmicon cbp_tmicon-earth"></div>
+                        <div class="cbp_tmlabel">
+                            <h2>最香的一顿饭</h2>
+                            <div class="photo hungry"></div>
+                            <p>
+                            下到游客中心算比较早的一批，毕竟是“蹭”团而来，自己也不想扯后腿。
+                            大概等待了半小时，BDX的同伴陆续基本集合完毕。
+                            回到农家饭庄，像难民一样，都狼吞虎咽的，这几顿饭，就这顿吃的最干净。
+                            </p>
+                        </div>
+                    </li>
+                    <li>
+                        <time class="cbp_tmtime" datetime="2017-08-06 17:00">
+                            <span>06/08/2017</span>
+                            <span>17:00</span>
+                        </time>
+                        <div class="cbp_tmicon cbp_tmicon-mail"></div>
+                        <div class="cbp_tmlabel">
+                            <h2>后怕</h2>
+                            <div class="photo worried"></div>
+                            <p>
+                            回来的路上，自己半睡半醒，一路上可以听到“车已超速”的提示。
+                            大巴车是这样子的：司机一个人坐在最前面的下层，乘客全部在之后的上层。
+                            全车人，估计只有一成乘客系了安全带。
+                            </p>
+                        </div>
+                    </li>
+                    <li>
+                        <time class="cbp_tmtime" datetime="2017-08-06 18:30">
+                            <span>06/08/2017</span>
+                            <span>18:30</span>
+                        </time>
+                        <div class="cbp_tmicon cbp_tmicon-screen"></div>
+                        <div class="cbp_tmlabel">
+                            <h2>总结</h2>
+                            <div class="photo summary"></div>
+                            <p>
+                            妈妈常唠叨“看景不如听景”、“世界哪儿都一样”，虽然自己嘴硬每次出发前都不认同，回来后都觉得绝对正确。
+                            总之，媒体把太白山宣传的有些过火：
+                            这个时间去，山下并不凉快，想要感受到凉意，必须得到海拔两千米以上的地方；
+                            景色也不是那么秀丽壮观，和西安附近的各个峪子差不多；
+                            最主要的问题是，并不适合攀爬，因为主要景点离山口太远，而且很分散，人文气息比华山要淡很多。
+                            自己是不推荐去太白山的。
+                            </p>
                         </div>
                     </li>
                 </ul>
+                <p>
+                就写这么多吧~
+                以上纯属个人观点，不喜勿喷！
+                </p>
             </div>
         </div>
         <div style="text-align:center;clear:both">
             <p>
-                <a href="#" target="_blank"></a>
+                <a href="http://nagexiucai.com/topic.html" target="_blank">更多精彩话题</a>
             </p>
         </div>
     </body>
