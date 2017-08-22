@@ -10,7 +10,7 @@ from matplotlib import pyplot as SHOW
 from collections import Counter
 
 
-DATA = "AVsearch.data"
+DATA = "AVrecord.txt"
 NAME = "wc-patent"
 
 
@@ -20,8 +20,9 @@ data = []
 with open("./"+DATA, encoding="UTF-8") as df:
     item = []
     for line in df:
-        line = line.strip()
-        if line.startswith("#"):continue
+        line = line.strip("/\r\n ")
+        if line.startswith("#") or line.startswith("$"):
+            continue
         if line:
             state = "do"
         else:
@@ -31,8 +32,8 @@ with open("./"+DATA, encoding="UTF-8") as df:
         if state == "parse" and item:
             data.append(dict(zip(("name", "number", "proposer", "abstract"), item)))
             item[:] = []
-# print(data)
-# print("there are",len(data), "pieces in total")
+print(data)
+print("there are",len(data), "pieces in total")
 
 words = {}
 counter = Counter()
@@ -43,16 +44,16 @@ for piece in data:
     for p in jieba.cut(piece.get("name")):
         if eraser.findall(p):
             pcounter[p] += 1
-    for p in jieba.cut(piece.get("abstract")):
+    for p in jieba.cut(piece.get("abstract", "")):
         if eraser.findall(p) and suberaser.match(p):
             pcounter[p] += 1
     words[piece.get("number")] = pcounter
     counter.update(pcounter)
 numbers = list(words.keys())
-# numbers.sort()
-# for number in numbers:
-#     print(number)
-# print("most frequent words")
+numbers.sort()
+for number in numbers:
+    print(number)
+print("most frequent words")
 print(counter.most_common(int(round(len(numbers)*0.8))))
 
 def approximate(features, statistics):
@@ -73,7 +74,7 @@ def approximate(features, statistics):
 
 print("there are", len(words), "cases in total")
 print("reference")
-reference = approximate(("视频", "音频"), words)
+reference = approximate(("视频", "录制", "教"), words)
 print(len(reference))
 print(reference)
 

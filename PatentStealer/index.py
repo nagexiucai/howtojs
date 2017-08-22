@@ -22,7 +22,7 @@ class Creeper(object):
     Interval = 2
 
     PrettyProxy = Proxy()
-    PrettyProxy.Wait()
+    # PrettyProxy.Wait()
 
     NextCase = '<span></span><a href="/Home/Result?SearchWord=***" class="next">下一页</a><div></div>'
     Next = FIND.compile('</span>\s*?<a href="(.*?)" class="next">', FIND.S)
@@ -166,8 +166,8 @@ class Creeper(object):
 # Creeper.ut()
 
 creeper = Creeper(entry="http://www.soopat.com/Home/Result",
-                  params={"SearchWord": "开关", "FMZL": "Y", "SYXX": "Y", "PatentIndex": 160},
-                  proxies=True)
+                  params={"SearchWord": "视频录制", "FMZL": "Y", "SYXX": "Y", "PatentIndex": 540},
+                  proxies=False)
 try:
     creeper.creep()
 finally:
