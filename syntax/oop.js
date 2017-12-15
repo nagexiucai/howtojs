@@ -299,3 +299,102 @@ console.log("ingredient of fart b is", bFart.ingredient);
 ** 实例属性重度共享
 ** 不需要创建自定义类型
 */
+
+/* 回马枪：再仔细看下“最佳实践” */
+function bestPractice() {
+    function assShow(o, name) {
+        console.log("=====", name, "=====");
+        console.log(o.prototype);
+        console.log(o.constructor);
+        console.log(o.__proto__);
+        if (o.prototype != undefined) {
+            console.log(o.prototype.prototype);
+            console.log(o.prototype.constructor);
+            console.log(o.prototype.__proto__);
+        }
+    }
+
+    function beget(o) {
+        var F = function() {};
+        F.prototype = o;
+        return new F();
+    }
+
+    function Tree(age) {
+        this.age = age;
+        this.story = [];
+    }
+
+    assShow(Tree, "Tree");
+
+    Tree.prototype.bloom = function() {};
+
+    assShow(Tree, "Tree.prototype.bloom 设置为空对象");
+
+    function Paulownia(age) {
+        Tree.call(this, age);
+    }
+
+    assShow(Paulownia, "Paulownia构造函数中调用Tree.call(this, age)");
+
+    var proto = beget(Tree.prototype);
+
+    assShow(proto, "通过beget函数创建proto");
+
+    proto.constructor = Paulownia;
+
+    assShow(proto, "proto.constructor设置为Paulownia");
+
+    Paulownia.prototype = proto;
+
+    assShow(Paulownia, "Paulownia.prototype设置为proto");
+
+    var paulownia = new Paulownia(300);
+
+    assShow(paulownia, "通过构造函数实例化Paulownia");
+}
+
+bestPractice();
+
+/*
+===== Tree =====
+Tree {}
+[Function: Function]
+[Function]
+undefined
+[Function: Tree]
+{}
+===== Tree.prototype.bloom 设置为空对象 =====
+Tree { bloom: [Function] }
+[Function: Function]
+[Function]
+undefined
+[Function: Tree]
+{}
+===== Paulownia构造函数中调用Tree.call(this, age) =====
+Paulownia {}
+[Function: Function]
+[Function]
+undefined
+[Function: Paulownia]
+{}
+===== 通过beget函数创建proto =====
+undefined
+[Function: Tree]
+Tree { bloom: [Function] }
+===== proto.constructor设置为Paulownia =====
+undefined
+[Function: Paulownia]
+Tree { bloom: [Function] }
+===== Paulownia.prototype设置为proto =====
+Paulownia { constructor: [Function: Paulownia] }
+[Function: Function]
+[Function]
+undefined
+[Function: Paulownia]
+Tree { bloom: [Function] }
+===== 通过构造函数实例化Paulownia =====
+undefined
+[Function: Paulownia]
+Paulownia { constructor: [Function: Paulownia] }
+*/
