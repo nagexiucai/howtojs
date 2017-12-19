@@ -3,7 +3,7 @@
 
 function chainMaker (c) {
   // todo: make websocket
-  if (typeof c == "string" and c.startsWith("ws://")) {
+  if (typeof c == "string" && c.startsWith("ws://")) {
 
   }
   else {
